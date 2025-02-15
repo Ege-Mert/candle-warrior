@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5eb5ac9d295db324b9fa48c96b891d91, type: 3}
+  m_Name: BaseEnemy
+  m_EditorClassIdentifier: 
+  enemyName: BaseEnemy
+  baseHealth: 100
+  baseDamage: 10
+  baseSpeed: 5
+  healthScaling: 1.2
+  damageScaling: 1.15
+  speedScaling: 1.1
+  baseWaxDrop: 10
+  waxScaling: 1.1
