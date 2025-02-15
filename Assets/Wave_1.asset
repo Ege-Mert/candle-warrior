@@ -12,5 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f558208265789c54cbddba8b451dd107, type: 3}
   m_Name: Wave_1
   m_EditorClassIdentifier: 
-  enemySpawns: []
-  waveDuration: 0
+  enemySpawns:
+  - enemyPrefab: {fileID: 917138927805863312, guid: c815c030f2728bb47948e9ada2e1ca77, type: 3}
+    count: 5
+    delayBeforeSpawn: 0
+    spawnInterval: 1
+  waveDuration: 5

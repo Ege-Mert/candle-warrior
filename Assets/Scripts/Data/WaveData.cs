@@ -6,11 +6,11 @@ public class EnemySpawnInfo
 {
     [Tooltip("Enemy prefab to spawn")]
     public GameObject enemyPrefab;
-    [Tooltip("How many of this enemy to spawn")]
+    [Tooltip("How many of this enemy type to spawn")]
     public int count;
-    [Tooltip("Delay before starting to spawn this enemy type")]
+    [Tooltip("Delay before starting to spawn this enemy type (seconds)")]
     public float delayBeforeSpawn;
-    [Tooltip("Time interval between spawns of this enemy type")]
+    [Tooltip("Time interval between individual spawns of this enemy type (seconds)")]
     public float spawnInterval;
 }
 
@@ -19,6 +19,7 @@ public class WaveData : ScriptableObject
 {
     [Tooltip("List of enemy spawn configurations for this wave")]
     public List<EnemySpawnInfo> enemySpawns;
-    [Tooltip("Optional overall duration for the wave (if not using enemy clear condition)")]
+    
+    [Tooltip("Optional overall duration to wait after spawning all enemies (seconds)")]
     public float waveDuration;
 }

@@ -9,22 +9,24 @@ public class WaveManager : MonoBehaviour
     public List<WaveData> waves;
     
     [Header("Spawn Settings")]
-    [Tooltip("Spawn points where enemies can appear")]
+    [Tooltip("Array of spawn points for enemies")]
     public Transform[] spawnPoints;
-    [Tooltip("Target for the enemies (e.g., the candle)")]
+    [Tooltip("Target that enemies move toward (e.g., the Candle)")]
     public Transform candleTarget;
     
     [Header("Difficulty Scaling")]
-    [Tooltip("Multiplier applied to enemy stats each wave (if applicable)")]
+    [Tooltip("Multiplier applied to enemy stats each wave")]
     public float enemyDifficultyMultiplier = 1f;
 
-    // Keep track of the current wave and active enemies.
     private int currentWaveIndex = 0;
     private List<GameObject> activeEnemies = new List<GameObject>();
 
     void Start()
     {
-        StartCoroutine(StartNextWave());
+        if (waves.Count > 0)
+            StartCoroutine(StartNextWave());
+        else
+            Debug.LogError("No waves assigned in the WaveManager.");
     }
 
     IEnumerator StartNextWave()
@@ -32,14 +34,13 @@ public class WaveManager : MonoBehaviour
         if (currentWaveIndex >= waves.Count)
         {
             Debug.Log("All waves completed!");
-            // You could start a boss wave here or trigger a win.
             yield break;
         }
 
         WaveData currentWave = waves[currentWaveIndex];
         Debug.Log("Starting Wave: " + (currentWaveIndex + 1));
 
-        // For each enemy spawn configuration in this wave…
+        // Spawn enemies as defined in the current wave.
         foreach (var spawnInfo in currentWave.enemySpawns)
         {
             yield return new WaitForSeconds(spawnInfo.delayBeforeSpawn);
@@ -51,20 +52,30 @@ public class WaveManager : MonoBehaviour
             }
         }
 
-        // Optionally wait for a duration or until all enemies are cleared.
         yield return new WaitForSeconds(currentWave.waveDuration);
 
-        // Optionally wait until active enemies are cleared:
+        // Wait until all active enemies are cleared.
         while (activeEnemies.Count > 0)
         {
             yield return null;
         }
 
+        // Wait an additional 1 second after the last enemy is cleared.
+        yield return new WaitForSeconds(1f);
+
         currentWaveIndex++;
-        // Increase difficulty if desired.
-        enemyDifficultyMultiplier += 0.1f;
-        // (Here you could open your market/upgrade UI.)
+        enemyDifficultyMultiplier += 0.1f; // Increase difficulty for next wave.
         Debug.Log("Wave Complete! Preparing next wave...");
+
+        // Show the market UI before starting the next wave.
+        MarketUIManager marketUI = FindObjectOfType<MarketUIManager>();
+        if (marketUI != null)
+        {
+            marketUI.ShowMarketUI();  // No parameter now
+            // Wait until the market panel is hidden (player pressed Continue).
+            yield return new WaitUntil(() => marketUI.marketPanel.activeSelf == false);
+        }
+
         StartCoroutine(StartNextWave());
     }
 
@@ -78,20 +89,18 @@ public class WaveManager : MonoBehaviour
         Transform spawnPoint = spawnPoints[Random.Range(0, spawnPoints.Length)];
         GameObject enemy = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
 
-        // Example: Apply scaling or difficulty adjustments.
         EnemyController enemyCtrl = enemy.GetComponent<EnemyController>();
         if (enemyCtrl != null)
         {
             enemyCtrl.SetTarget(candleTarget);
             enemyCtrl.ApplyDifficultyMultiplier(enemyDifficultyMultiplier);
         }
-
         activeEnemies.Add(enemy);
     }
 
-    // Call this from your enemy scripts when they are destroyed or removed.
     public void RemoveEnemy(GameObject enemy)
     {
-        activeEnemies.Remove(enemy);
+        if (activeEnemies.Contains(enemy))
+            activeEnemies.Remove(enemy);
     }
 }

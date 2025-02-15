@@ -9,15 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5eb5ac9d295db324b9fa48c96b891d91, type: 3}
-  m_Name: BaseEnemy
+  m_Script: {fileID: 11500000, guid: f68671c6e9887d8479c74fcd1c25f7c8, type: 3}
+  m_Name: PickupRange
   m_EditorClassIdentifier: 
-  enemyName: BaseEnemy
-  baseHealth: 100
-  baseDamage: 10
-  baseSpeed: 5
-  healthScaling: 1.2
-  damageScaling: 1.15
-  speedScaling: 1.1
-  baseWaxDrop: 10
-  waxScaling: 1.1
+  upgradeName: PickupRange
+  upgradeType: 1
+  description: 
+  maxLevel: 10
+  costPerLevel: 
+  effectPerLevel: []
