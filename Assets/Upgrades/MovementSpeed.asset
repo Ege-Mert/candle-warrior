@@ -15,9 +15,9 @@ MonoBehaviour:
   upgradeName: MovementSpeed
   upgradeType: 0
   description: 
-  maxLevel: 10
+  maxLevel: 3
   costPerLevel: 0f0000001900000023000000
   effectPerLevel:
-  - 5
+  - 6
   - 7
   - 8
