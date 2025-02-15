@@ -53,7 +53,6 @@ public class CandleManager : MonoBehaviour
 
     void Awake()
     {
-        // Validate required assignments.
         if (!bottomPrefab || !middlePrefab || !topPrefab || !maskObject)
         {
             Debug.LogError("Assign all candle parts and the maskObject in the Inspector.");
@@ -65,7 +64,6 @@ public class CandleManager : MonoBehaviour
             return;
         }
 
-        // Get sizes from SpriteRenderers (ensure sprites have bottom pivot).
         SpriteRenderer srBottom = bottomPrefab.GetComponent<SpriteRenderer>();
         SpriteRenderer srMiddle = middlePrefab.GetComponent<SpriteRenderer>();
         SpriteRenderer srTop = topPrefab.GetComponent<SpriteRenderer>();
@@ -82,29 +80,23 @@ public class CandleManager : MonoBehaviour
 
     void Start()
     {
-        // Create a container for candle parts.
         candleContainer = new GameObject("CandleContainer").transform;
         candleContainer.SetParent(transform);
         candleContainer.localPosition = Vector3.zero;
 
-        // Instantiate bottom segment.
         bottomSegment = Instantiate(bottomPrefab, candleContainer);
         bottomSegment.transform.localPosition = Vector3.zero;
 
-        // Instantiate middle segment.
         middleSegment = Instantiate(middlePrefab, candleContainer);
         middleSegment.transform.localPosition = new Vector3(0, bottomHeight, 0);
 
-        // Instantiate top segment.
         topSegment = Instantiate(topPrefab, candleContainer);
         topSegment.transform.localPosition = new Vector3(0, bottomHeight + middleFullHeight + topSegmentOffset, 0);
 
-        // Parent the mask object to the candle container and align it with the middle segment.
         if (maskObject.transform.parent != candleContainer)
             maskObject.transform.SetParent(candleContainer);
         maskObject.transform.localPosition = middleSegment.transform.localPosition;
 
-        // Set the middle segment to render only inside the mask.
         SpriteRenderer middleSR = middleSegment.GetComponent<SpriteRenderer>();
         if (middleSR != null)
             middleSR.maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
@@ -114,7 +106,6 @@ public class CandleManager : MonoBehaviour
 
     void Update()
     {
-        // Continuous burn only occurs when no enemy damage tween is active.
         if (!isTakingDamage && currentDuration > 0)
         {
             currentDuration = Mathf.Max(0, currentDuration - Time.deltaTime * decreaseRate);
@@ -123,24 +114,16 @@ public class CandleManager : MonoBehaviour
         else if (currentDuration <= 0)
         {
             Debug.Log("Candle burned out. Game Over.");
-            // Insert game over logic here.
         }
     }
 
-    void UpdateCandleVisual()
+    // Make UpdateCandleVisual public so it can be called externally.
+    public void UpdateCandleVisual()
     {
-        // Calculate fraction of the candle remaining.
         float fraction = Mathf.Clamp01(currentDuration / maxDuration);
-
-        // Update mask scale based on the fraction and multipliers.
         maskObject.transform.localScale = new Vector3(maskScaleMultiplierX, fraction * maskScaleMultiplierY, 1);
-
-        // Calculate the visible height of the middle segment.
         float visibleMiddleHeight = middleFullHeight * fraction;
-        // Reposition the top segment so it always sits directly atop the visible candle.
         topSegment.transform.localPosition = new Vector3(0, bottomHeight + visibleMiddleHeight + topSegmentOffset, 0);
-
-        // Update safe zone size using interpolation between min and max scales.
         float safeZoneScale = Mathf.Lerp(safeZoneMinScale, safeZoneMaxScale, fraction);
         safeZoneTransform.localScale = new Vector3(safeZoneScale, safeZoneScale, 1);
     }
@@ -151,10 +134,8 @@ public class CandleManager : MonoBehaviour
         UpdateCandleVisual();
     }
 
-    // Call this when an enemy damages the candle.
     public void DecreaseDuration(float amount)
     {
-        // Tween the reduction over 0.2 seconds to smoothly update the candle.
         isTakingDamage = true;
         float newDuration = Mathf.Max(0, currentDuration - amount);
         DOTween.To(() => currentDuration, x => { currentDuration = x; UpdateCandleVisual(); }, newDuration, 0.2f)
@@ -162,7 +143,6 @@ public class CandleManager : MonoBehaviour
                .OnComplete(() => isTakingDamage = false);
     }
 
-    // Call this to restore candle duration (e.g., when wax is added).
     public void AddWax()
     {
         currentDuration = Mathf.Min(maxDuration, currentDuration + waxAddAmount);

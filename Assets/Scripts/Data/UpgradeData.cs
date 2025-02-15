@@ -30,9 +30,6 @@ public class UpgradeData : ScriptableObject
     [Tooltip("Custom effect value for each level (0-indexed). For example, movement speed increase or damage bonus.")]
     public float[] effectPerLevel;
 
-    /// <summary>
-    /// Returns the cost for the current level (0-indexed).
-    /// </summary>
     public int GetCurrentCost(int currentLevel)
     {
         if (currentLevel < 0 || currentLevel >= costPerLevel.Length)
@@ -40,9 +37,6 @@ public class UpgradeData : ScriptableObject
         return costPerLevel[currentLevel];
     }
 
-    /// <summary>
-    /// Returns the effect value for the current level (0-indexed).
-    /// </summary>
     public float GetCurrentEffect(int currentLevel)
     {
         if (currentLevel < 0 || currentLevel >= effectPerLevel.Length)
@@ -50,9 +44,6 @@ public class UpgradeData : ScriptableObject
         return effectPerLevel[currentLevel];
     }
 
-    /// <summary>
-    /// Returns true if there is room to upgrade further.
-    /// </summary>
     public bool CanUpgrade(int currentLevel)
     {
         return currentLevel < maxLevel;

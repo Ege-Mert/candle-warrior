@@ -14,9 +14,6 @@ public class UpgradeItemUI : MonoBehaviour
     private RuntimeUpgrade runtimeUpgrade;
     private System.Action<RuntimeUpgrade> onUpgradePurchased;
 
-    /// <summary>
-    /// Initializes the UI element with the given runtime upgrade data and player currency.
-    /// </summary>
     public void Initialize(RuntimeUpgrade ru, int playerCurrency, System.Action<RuntimeUpgrade> purchaseCallback)
     {
         runtimeUpgrade = ru;
@@ -27,9 +24,6 @@ public class UpgradeItemUI : MonoBehaviour
         upgradeButton.onClick.AddListener(OnClickUpgrade);
     }
 
-    /// <summary>
-    /// Updates the UI texts and button interactability based on the current wax.
-    /// </summary>
     public void UpdateUI(int playerCurrency)
     {
         if (runtimeUpgrade == null) return;
@@ -47,16 +41,12 @@ public class UpgradeItemUI : MonoBehaviour
             upgradeButton.interactable = false;
         }
     }
-    
 
     void OnClickUpgrade()
     {
         onUpgradePurchased?.Invoke(runtimeUpgrade);
     }
 
-    /// <summary>
-    /// Animates the cost text to provide feedback when an upgrade is purchased.
-    /// </summary>
     public void AnimateUpgrade()
     {
         costText.transform.DOScale(1.2f, 0.2f).OnComplete(() =>

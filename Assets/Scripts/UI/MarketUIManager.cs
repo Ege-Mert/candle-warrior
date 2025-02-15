@@ -22,7 +22,10 @@ public class MarketUIManager : MonoBehaviour
     [Tooltip("List of all available upgrades (ScriptableObjects)")]
     public List<UpgradeData> upgradeDatas;
 
-    // Instead of a local wax variable, we use PlayerCurrencyManager (assumed to be a singleton).
+    [Header("Screen Space Overlay")]
+    [Tooltip("Reference to the GraphicRaycaster on your screen space overlay canvas")]
+    public GraphicRaycaster screenSpaceRaycaster;
+
     private List<RuntimeUpgrade> runtimeUpgrades = new List<RuntimeUpgrade>();
     private List<UpgradeItemUI> upgradeItems = new List<UpgradeItemUI>();
 
@@ -37,36 +40,45 @@ public class MarketUIManager : MonoBehaviour
     /// <summary>
     /// Initializes new RuntimeUpgrade instances for each UpgradeData asset.
     /// Call this on game start/restart so upgrades reset.
+    /// Excludes any upgrades (like CandleLength) that aren’t meant to be purchased here.
     /// </summary>
     public void InitializeUpgrades()
-{
-    runtimeUpgrades.Clear();
-    // Remove any existing UI items except the resume button.
-    foreach (Transform child in upgradeListParent)
     {
-        if (child.gameObject != continueButton.gameObject)
-            Destroy(child.gameObject);
-    }
-    upgradeItems.Clear();
-
-    foreach (UpgradeData data in upgradeDatas)
-    {
-        RuntimeUpgrade ru = new RuntimeUpgrade(data);
-        runtimeUpgrades.Add(ru);
-
-        GameObject go = Instantiate(upgradeItemPrefab, upgradeListParent);
-        UpgradeItemUI itemUI = go.GetComponent<UpgradeItemUI>();
-        if (itemUI != null)
+        runtimeUpgrades.Clear();
+        // Remove any existing UI items except the resume button.
+        foreach (Transform child in upgradeListParent)
         {
-            int initialWax = (PlayerCurrencyManager.Instance != null) ? PlayerCurrencyManager.Instance.currentWax : 0;
-            itemUI.Initialize(ru, initialWax, OnUpgradePurchased);
-            upgradeItems.Add(itemUI);
+            if (child.gameObject != continueButton.gameObject)
+                Destroy(child.gameObject);
+        }
+        upgradeItems.Clear();
+
+        foreach (UpgradeData data in upgradeDatas)
+        {
+            // Skip CandleLength upgrade in market.
+            if (data.upgradeType == UpgradeType.CandleLength)
+                continue;
+
+            RuntimeUpgrade ru = new RuntimeUpgrade(data);
+            runtimeUpgrades.Add(ru);
+
+            GameObject go = Instantiate(upgradeItemPrefab, upgradeListParent);
+            UpgradeItemUI itemUI = go.GetComponent<UpgradeItemUI>();
+            if (itemUI != null)
+            {
+                int initialWax = (PlayerCurrencyManager.Instance != null) ? PlayerCurrencyManager.Instance.currentWax : 0;
+                itemUI.Initialize(ru, initialWax, OnUpgradePurchased);
+                upgradeItems.Add(itemUI);
+            }
         }
     }
-}
 
     public void ShowMarketUI()
     {
+        // Disable screen-space overlay's raycaster so it doesn't block world-space UI interactions.
+        if (screenSpaceRaycaster != null)
+            screenSpaceRaycaster.enabled = true;
+
         if (PlayerCurrencyManager.Instance != null)
         {
             UpdateWaxText();
@@ -83,6 +95,10 @@ public class MarketUIManager : MonoBehaviour
     {
         marketPanel.SetActive(false);
         Time.timeScale = 1f; // Resume game.
+
+        // Re-enable the screen-space overlay raycaster.
+        if (screenSpaceRaycaster != null)
+            screenSpaceRaycaster.enabled = false;
     }
 
     void UpdateWaxText()
@@ -114,11 +130,11 @@ public class MarketUIManager : MonoBehaviour
             item.UpdateUI(PlayerCurrencyManager.Instance.currentWax);
         }
 
-        // Optionally, apply the upgrade effect to your game systems here.
+        // Apply upgrade effect to the player.
         ApplyUpgrade(ru);
     }
 
-   void ApplyUpgrade(RuntimeUpgrade ru)
+    void ApplyUpgrade(RuntimeUpgrade ru)
     {
         switch (ru.upgradeData.upgradeType)
         {
@@ -135,15 +151,11 @@ public class MarketUIManager : MonoBehaviour
                 PlayerController.Instance.UpgradeDamage(ru.currentLevel, ru.upgradeData.GetCurrentEffect(ru.currentLevel));
                 break;
             case UpgradeType.DashLength:
-                // Here, we use UpgradeDashSpeed as a proxy for dash length if desired.
+                // For this example, use dash speed as proxy for dash length.
                 PlayerController.Instance.UpgradeDashSpeed(ru.currentLevel, ru.upgradeData.GetCurrentEffect(ru.currentLevel));
                 break;
             case UpgradeType.DashCooldown:
                 PlayerController.Instance.UpgradeDashCooldown(ru.currentLevel, ru.upgradeData.GetCurrentEffect(ru.currentLevel));
-                break;
-            case UpgradeType.CandleLength:
-                // You can either apply this to the player (if it affects some player property) or call a method on CandleManager.
-                PlayerController.Instance.UpgradeCandleLength(ru.currentLevel, ru.upgradeData.GetCurrentEffect(ru.currentLevel));
                 break;
         }
     }

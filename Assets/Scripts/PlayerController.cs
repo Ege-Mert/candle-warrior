@@ -44,10 +44,8 @@ public class PlayerController : MonoBehaviour
         else
             Destroy(gameObject);
 
-        if (rb == null)
-            rb = GetComponent<Rigidbody2D>();
-        if (spriteRenderer == null)
-            spriteRenderer = GetComponent<SpriteRenderer>();
+        if (rb == null) rb = GetComponent<Rigidbody2D>();
+        if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
 
         // Initialize current values to base values.
         moveSpeed = baseMoveSpeed;
@@ -110,7 +108,7 @@ public class PlayerController : MonoBehaviour
 
     /// <summary>
     /// Upgrades movement speed.
-    /// Effect is additive: new moveSpeed = baseMoveSpeed + effect.
+    /// New moveSpeed = baseMoveSpeed + effect.
     /// </summary>
     public void UpgradeMovementSpeed(int level, float effect)
     {
@@ -120,6 +118,7 @@ public class PlayerController : MonoBehaviour
 
     /// <summary>
     /// Upgrades pickup range.
+    /// New pickupRange = basePickupRange + effect.
     /// </summary>
     public void UpgradePickupRange(int level, float effect)
     {
@@ -129,8 +128,7 @@ public class PlayerController : MonoBehaviour
 
     /// <summary>
     /// Upgrades attack speed.
-    /// For attack cooldown, a lower cooldown means faster attacks.
-    /// Here, effect is negative: new attackCooldown = baseAttackCooldown + effect.
+    /// New attackCooldown = baseAttackCooldown + effect (effect should be negative).
     /// </summary>
     public void UpgradeAttackSpeed(int level, float effect)
     {
@@ -140,6 +138,7 @@ public class PlayerController : MonoBehaviour
 
     /// <summary>
     /// Upgrades attack damage.
+    /// New attackDamage = baseAttackDamage + effect.
     /// </summary>
     public void UpgradeDamage(int level, float effect)
     {
@@ -149,6 +148,7 @@ public class PlayerController : MonoBehaviour
 
     /// <summary>
     /// Upgrades dash speed (or dash length).
+    /// New dashSpeed = baseDashSpeed + effect.
     /// </summary>
     public void UpgradeDashSpeed(int level, float effect)
     {
@@ -158,7 +158,7 @@ public class PlayerController : MonoBehaviour
 
     /// <summary>
     /// Upgrades dash cooldown.
-    /// Effect is negative: new dashCooldown = baseDashCooldown + effect.
+    /// New dashCooldown = baseDashCooldown + effect (effect should be negative).
     /// </summary>
     public void UpgradeDashCooldown(int level, float effect)
     {
@@ -167,12 +167,11 @@ public class PlayerController : MonoBehaviour
     }
 
     /// <summary>
-    /// Upgrades candle length.
-    /// This upgrade might be applied to CandleManager instead, but here's a placeholder.
+    /// (CandleLength upgrade is removed from the market.)
     /// </summary>
     public void UpgradeCandleLength(int level, float effect)
     {
-        // You might want to call CandleManager.Instance.UpgradeCandleLength(level, effect);
-        Debug.Log("Candle Length upgrade applied with effect: " + effect);
+        // Not used in Market upgrades.
+        Debug.Log("Candle Length upgrade is handled separately.");
     }
 }

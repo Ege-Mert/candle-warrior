@@ -24,7 +24,6 @@ public class RuntimeUpgrade
         return upgradeData.CanUpgrade(currentLevel);
     }
 
-    // Returns the effect value for the current level.
     public float GetCurrentEffect()
     {
         return upgradeData.GetCurrentEffect(currentLevel);
