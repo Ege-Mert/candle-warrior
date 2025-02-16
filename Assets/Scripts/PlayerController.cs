@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using DG.Tweening;
@@ -31,6 +32,12 @@ public class PlayerController : MonoBehaviour
     public SpriteRenderer spriteRenderer; // Assign via Inspector
     public Rigidbody2D rb;                // Assign via Inspector
 
+    [Header("Animation")] 
+    public Animator animator;
+    [SerializeField] private GameObject afterImagePrefab;
+    [SerializeField] private float afterImageLifetime = 0.5f;
+    [SerializeField] private float afterImageSpawnRate = 0.05f;
+
     private PlayerInputActions inputActions;
     private Vector2 movementInput;
     private bool isDashing = false;
@@ -59,6 +66,8 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.Move.performed += ctx => movementInput = ctx.ReadValue<Vector2>();
         inputActions.Player.Move.canceled += ctx => movementInput = Vector2.zero;
         inputActions.Player.Dash.performed += ctx => AttemptDash();
+
+        animator = GetComponent<Animator>();
     }
 
     private void OnEnable() { inputActions.Enable(); }
@@ -71,6 +80,10 @@ public class PlayerController : MonoBehaviour
             spriteRenderer.flipX = true;
         else if (movementInput.x > 0)
             spriteRenderer.flipX = false;
+        
+        bool isMoving = movementInput != Vector2.zero;
+        animator.SetBool("isMoving", isMoving);
+
     }
 
     private void FixedUpdate()
@@ -101,6 +114,8 @@ public class PlayerController : MonoBehaviour
             {
                 spriteRenderer.DOColor(Color.white, 0.1f);
             });
+            PlaySound();
+            StartCoroutine(CreateAfterImages());
         }
     }
 
@@ -173,5 +188,35 @@ public class PlayerController : MonoBehaviour
     {
         // Not used in Market upgrades.
         Debug.Log("Candle Length upgrade is handled separately.");
+    }
+    // Animation Methots
+    private IEnumerator CreateAfterImages()
+    {
+        float elapsedTime = 0f;
+
+        while (elapsedTime < dashDuration)
+        {
+            CreateAfterImage();
+            yield return new WaitForSeconds(afterImageSpawnRate);
+            elapsedTime += afterImageSpawnRate;
+        }
+    }
+
+    private void CreateAfterImage()
+    {
+        GameObject afterImage = Instantiate(afterImagePrefab, transform.position, transform.rotation);
+        SpriteRenderer afterImageSR = afterImage.GetComponent<SpriteRenderer>();
+
+        afterImageSR.sprite = spriteRenderer.sprite;  // Mevcut sprite'ı kopyala
+        afterImageSR.flipX = spriteRenderer.flipX;    // Flip durumunu koru
+        afterImageSR.color = new Color(1f, 1f, 1f, 0.5f); // Yarı saydam başlat
+
+        // Gölgeyi zamanla yok et
+        afterImageSR.DOFade(0f, afterImageLifetime).OnComplete(() => Destroy(afterImage));
+    }
+
+    void PlaySound()
+    {
+        //burada ses çalacak
     }
 }

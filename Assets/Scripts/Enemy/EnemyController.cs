@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour
@@ -13,6 +14,8 @@ public class EnemyController : MonoBehaviour
     public GameObject waxPickupPrefab;  // The wax item to drop on death
     public int waxDropAmount = 5;       // How much wax this enemy drops
 
+   
+
     private Transform target;
     private WaveManager waveManager;
 
@@ -23,6 +26,7 @@ public class EnemyController : MonoBehaviour
 
     void Update()
     {
+        
         if (target != null)
         {
             // Move toward the candle target (set by WaveManager).
@@ -80,14 +84,17 @@ public class EnemyController : MonoBehaviour
         // If colliding with the Candle, damage it, then destroy self.
         if (collision.CompareTag("Candle"))
         {
+            
             CandleManager candle = collision.GetComponent<CandleManager>();
             if (candle != null)
             {
                 candle.DecreaseDuration(damage);
             }
             if (waveManager != null)
-                waveManager.RemoveEnemy(gameObject);
+                waveManager.RemoveEnemy(gameObject); 
             Destroy(gameObject);
         }
     }
+    
+    
 }

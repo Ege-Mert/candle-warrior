@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 4992908986277780429}
   - component: {fileID: 7473704710167056504}
   - component: {fileID: 7160242979686533861}
-  - component: {fileID: 2452884319871261740}
+  - component: {fileID: 8985973630744026712}
   m_Layer: 6
-  m_Name: Enemy
+  m_Name: Enemy 1
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -107,7 +107,6 @@ MonoBehaviour:
   waxPickupPrefab: {fileID: 7751316390434962826, guid: 488ed0f44885989428e60cdb98837326, type: 3}
   waxDropAmount: 50
   audioClips: []
-  audioSource: {fileID: 0}
 --- !u!58 &7473704710167056504
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -170,7 +169,7 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!95 &2452884319871261740
+--- !u!95 &8985973630744026712
 Animator:
   serializedVersion: 5
   m_ObjectHideFlags: 0
@@ -180,7 +179,7 @@ Animator:
   m_GameObject: {fileID: 917138927805863312}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: b09d5aac797f4f24599ccd86d7c413a6, type: 2}
+  m_Controller: {fileID: 9100000, guid: f246ae5b49df7cf4785423ba53b65934, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
