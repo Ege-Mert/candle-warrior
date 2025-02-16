@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7473704710167056504}
   - component: {fileID: 7160242979686533861}
   - component: {fileID: 1231240610826057656}
+  - component: {fileID: -6675722830938489584}
   m_Layer: 6
   m_Name: Enemy 2
   m_TagString: Enemy
@@ -106,7 +107,6 @@ MonoBehaviour:
   knockbackResistance: 0.2
   waxPickupPrefab: {fileID: 7751316390434962826, guid: 488ed0f44885989428e60cdb98837326, type: 3}
   waxDropAmount: 50
-  audioClips: []
 --- !u!58 &7473704710167056504
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -190,3 +190,16 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-6675722830938489584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 917138927805863312}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4218d78ef2d54d0898b7514e121a781f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _color: {r: 1, g: 1, b: 1, a: 1}

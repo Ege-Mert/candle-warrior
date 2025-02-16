@@ -1,5 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.Events;
 
 public class CandleManager : MonoBehaviour
 {
@@ -38,6 +39,9 @@ public class CandleManager : MonoBehaviour
     [Header("Candle Top Adjustment")]
     [Tooltip("Vertical offset to apply to the top segment (set this to the difference between the top segment's pivot and its bottom)")]
     public float topSegmentOffset = 0f;
+
+    [Header("Events")]
+    public UnityEvent<float> onDurationChanged; 
 
     // Internal variables for positioning
     private Transform candleContainer;
@@ -126,6 +130,8 @@ public class CandleManager : MonoBehaviour
         topSegment.transform.localPosition = new Vector3(0, bottomHeight + visibleMiddleHeight + topSegmentOffset, 0);
         float safeZoneScale = Mathf.Lerp(safeZoneMinScale, safeZoneMaxScale, fraction);
         safeZoneTransform.localScale = new Vector3(safeZoneScale, safeZoneScale, 1);
+
+        onDurationChanged?.Invoke(fraction);
     }
 
     public void RestoreDuration(float amount)
