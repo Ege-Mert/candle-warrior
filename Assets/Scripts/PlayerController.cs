@@ -43,6 +43,9 @@ public class PlayerController : MonoBehaviour
     private bool isDashing = false;
     private bool canDash = true;
 
+    public AudioSource audioSource;
+    public AudioClip audioClip;
+
     private void Awake()
     {
         // Singleton assignment.
@@ -68,6 +71,7 @@ public class PlayerController : MonoBehaviour
         inputActions.Player.Dash.performed += ctx => AttemptDash();
 
         animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     private void OnEnable() { inputActions.Enable(); }
@@ -217,6 +221,6 @@ public class PlayerController : MonoBehaviour
 
     void PlaySound()
     {
-        //burada ses çalacak
+        audioSource.PlayOneShot(audioClip);
     }
 }

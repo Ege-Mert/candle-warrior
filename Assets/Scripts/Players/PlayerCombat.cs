@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using DG.Tweening;
 
@@ -27,6 +28,13 @@ public class PlayerCombat : MonoBehaviour
 
     private float attackTimer = 0f;
     private Transform currentTarget;
+    public AudioSource audioSource;
+    public AudioClip audioClip;
+
+    private void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     void Update()
     {
@@ -115,6 +123,8 @@ public class PlayerCombat : MonoBehaviour
             enemy.DOMove(enemy.position + (Vector3)(direction * actualKnockback), 0.2f)
                  .SetEase(Ease.OutQuad);
         }
+        //müzik
+        audioSource.PlayOneShot(audioClip);
     }
 
     void OnDrawGizmosSelected()

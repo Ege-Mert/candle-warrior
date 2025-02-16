@@ -103,10 +103,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 2
   damage: 10
-  health: 100
+  health: 44
   knockbackResistance: 0.2
   waxPickupPrefab: {fileID: 7751316390434962826, guid: 488ed0f44885989428e60cdb98837326, type: 3}
-  waxDropAmount: 50
+  waxDropAmount: 2
 --- !u!58 &7473704710167056504
 CircleCollider2D:
   m_ObjectHideFlags: 0

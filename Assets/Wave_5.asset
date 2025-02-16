@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f558208265789c54cbddba8b451dd107, type: 3}
-  m_Name: Wave_2
+  m_Name: Wave_5
   m_EditorClassIdentifier: 
   enemySpawns:
   - enemyPrefab: {fileID: 917138927805863312, guid: c815c030f2728bb47948e9ada2e1ca77, type: 3}
+    count: 12
+    delayBeforeSpawn: 0
+    spawnInterval: 0
+  - enemyPrefab: {fileID: 917138927805863312, guid: 3abb4610fe1dfaf428034467f1745644, type: 3}
     count: 2
     delayBeforeSpawn: 0
-    spawnInterval: 1
-  - enemyPrefab: {fileID: 917138927805863312, guid: 3abb4610fe1dfaf428034467f1745644, type: 3}
-    count: 1
-    delayBeforeSpawn: 0
-    spawnInterval: 1
+    spawnInterval: 0
   - enemyPrefab: {fileID: 917138927805863312, guid: fc9b8c56919c019488d2b45fc2d982d3, type: 3}
     count: 3
     delayBeforeSpawn: 0
-    spawnInterval: 1
-  waveDuration: 5
+    spawnInterval: 0
+  waveDuration: 0
