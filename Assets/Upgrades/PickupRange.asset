@@ -16,5 +16,5 @@ MonoBehaviour:
   upgradeType: 1
   description: 
   maxLevel: 10
-  costPerLevel: 
+  costPerLevel: 020000000400000006000000080000000a0000000c0000000e000000100000001200000014000000
   effectPerLevel: []
